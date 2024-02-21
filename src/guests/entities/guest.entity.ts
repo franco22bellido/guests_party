@@ -19,7 +19,7 @@ export class Guest {
     lastName: string;
 
     @Column({ type: 'boolean', default: false })
-    hasArrived: boolean;
+    state: boolean;
 
     @CreateDateColumn()
     createdAt: Date;
