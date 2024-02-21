@@ -1,4 +1,4 @@
-export class createGuestDto{
+export class CreateGuestDto{
     firstName : string;
     lastName: string;
 }

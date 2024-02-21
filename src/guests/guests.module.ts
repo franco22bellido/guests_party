@@ -4,10 +4,12 @@ import { GuestsController } from './guests.controller';
 import {TypeOrmModule} from '@nestjs/typeorm'
 import { Guest } from './entities/guest.entity';
 import { GuestRepository } from './guest.repository';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Guest])
+    TypeOrmModule.forFeature([Guest]),
+    AuthModule
   ],
   providers: [GuestsService, GuestRepository],
   controllers: [GuestsController]

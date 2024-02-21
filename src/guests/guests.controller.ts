@@ -1,6 +1,7 @@
 import { Controller } from '@nestjs/common';
-import { Body, Get, Param, Post, Put, Delete} from '@nestjs/common/decorators';
-import { createGuestDto } from './dto/createGuest.dto';
+import { Body, Get, Param, Post, Put, Delete, UseGuards} from '@nestjs/common/decorators';
+import { AuthGuard } from 'src/auth/guards/auth.guard';
+import { CreateGuestDto } from './dto/createGuest.dto';
 import { UpdateGuestDto } from './dto/updateGuest.dto';
 import { GuestsService } from './guests.service';
 
@@ -12,9 +13,10 @@ export class GuestsController {
 
 
     @Post('/')
-    createGuest(@Body() newGuest: createGuestDto){
-        return this._guestService.createGuest(newGuest.firstName, newGuest.lastName);
+    createGuest(@Body() newGuest: CreateGuestDto){
+        return this._guestService.createGuest(newGuest);
     }
+    
     @Get('/:guestId')
     selectOne(@Param('guestId') guestId: number){
         return this._guestService.selectGuest(guestId);

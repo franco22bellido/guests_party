@@ -4,6 +4,9 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { Guest } from './guests/entities/guest.entity';
 import { GuestsModule } from './guests/guests.module';
+import { User } from './users/entities/user.entity';
+import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -14,10 +17,12 @@ import { GuestsModule } from './guests/guests.module';
       port: 3306,
       username: "root",
       password: "Ironman312345aAA",
-      entities: [Guest],
+      entities: [Guest, User],
       synchronize: true,
     }),
-    GuestsModule
+    GuestsModule,
+    UsersModule,
+    AuthModule
   ],
   controllers: [AppController],
   providers: [AppService],
