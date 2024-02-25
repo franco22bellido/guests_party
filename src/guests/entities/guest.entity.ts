@@ -1,9 +1,12 @@
+import { Event } from 'src/events/entities/event.entity';
 import {
     Entity,
     PrimaryGeneratedColumn,
     Column,
     CreateDateColumn,
-    UpdateDateColumn
+    UpdateDateColumn,
+    ManyToOne,
+    JoinColumn
 } from 'typeorm'
 
 @Entity()
@@ -26,4 +29,15 @@ export class Guest {
 
     @UpdateDateColumn()
     updatedAt: Date;
+
+    @Column({type: "integer"})
+    eventId : number
+
+
+    @ManyToOne(()=> Event, event=> event.guests)
+    @JoinColumn({
+        name: "eventId",
+        referencedColumnName: "id"
+    })
+    event: Event
 }

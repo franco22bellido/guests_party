@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Event } from "src/events/entities/event.entity";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class User {
@@ -10,4 +11,8 @@ export class User {
     email: string;
     @Column({ nullable: false})
     password: string;
+
+    @OneToMany(()=> Event, event => event.user)
+    events: Event[]
+
 }
