@@ -14,23 +14,20 @@ export class GuestsController {
 
     @Post('/')
     createGuest(@Body() newGuest: CreateGuestDto){
-        return this._guestService.createGuest(newGuest);
+        return this._guestService.createGuest(newGuest, 1 , 1);
+    }
+    @Get('/:token')
+    getInfoByToken(@Param('token') token : string){
+        return this._guestService.getInfoByToken(token);
     }
     
-    @Get('/:guestId')
-    selectOne(@Param('guestId') guestId: number){
-        return this._guestService.selectGuest(guestId);
-    }
-    @Put('/:guestId')
-    updateOne(@Param('guestId') guestId: number, @Body() guestUpdated: UpdateGuestDto){
-        return this._guestService.updateGuest(guestId, guestUpdated);
+    @Put('/:token')
+    updateOne(@Param('token') token: string){
+        return this._guestService.setStateByToken(token);
     }
     @Delete("/:guestId")
     deleteOne(@Param('guestId') guestId: number){
         return this._guestService.deleteGuest(guestId);
     }
-    @Post('/setState/:guestId')
-    setState(@Param('guestId') guestId: number, @Body('state')state: boolean){
-        return this._guestService.setStateOfOneGuest(guestId, state);
-    }
+
 }

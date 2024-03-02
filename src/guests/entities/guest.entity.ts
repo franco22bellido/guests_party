@@ -1,4 +1,5 @@
 import { Event } from 'src/events/entities/event.entity';
+import { User } from 'src/users/entities/user.entity';
 import {
     Entity,
     PrimaryGeneratedColumn,
@@ -33,6 +34,8 @@ export class Guest {
     @Column({type: "integer"})
     eventId : number
 
+    @Column({type: 'integer'})
+    userId: number;
 
     @ManyToOne(()=> Event, event=> event.guests)
     @JoinColumn({
@@ -40,4 +43,11 @@ export class Guest {
         referencedColumnName: "id"
     })
     event: Event
+
+    @ManyToOne(()=> User, user => user.guests)
+    @JoinColumn({
+        name: "userId",
+        referencedColumnName: "id"
+    })
+    user: User;
 }
