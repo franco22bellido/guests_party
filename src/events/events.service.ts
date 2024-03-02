@@ -26,14 +26,18 @@ export class EventsService {
     return await this._eventRepository.findOne({where: {id: eventId, userId}});
   }
 
-  async update(eventId: number, updateEventDto: UpdateEventDto) {
-    return await this._eventRepository.update(eventId, updateEventDto);
+  async update(userId: number, eventId: number, updateEventDto: UpdateEventDto) {
+
+    return await this._eventRepository.update({id: eventId, userId}, updateEventDto);
+    
   }
 
-  async delete(eventId: number) {
-    return await this._eventRepository.delete(eventId);
+  async delete(userId: number, eventId: number) {
+
+    return await this._eventRepository.delete({id: eventId, userId});
+
   }
-  async getRelationGuest(eventId: number, userId: number){
+  async getRelationGuests(eventId: number, userId: number){
     const event = await this._eventRepository.findOne({where: {id: eventId, userId}, relations: {guests: true}});
     return event;
   }

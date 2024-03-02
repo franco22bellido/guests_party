@@ -34,11 +34,11 @@ export class AuthService {
         if(!isPasswordValid){
             throw new HttpException('password is wrong' , HttpStatus.UNAUTHORIZED);
         }
-        const payload = {email : user.email}
+        const payload = {id : user.id}
         const token = await this._jwtService.signAsync(payload);
 
         return {
-            token, email : user.email
+            token, id : user.id
         }
     }
 

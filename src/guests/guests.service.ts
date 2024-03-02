@@ -64,18 +64,9 @@ export class GuestsService {
 
         //despues queda solo hacer un setstate de la db
     }
-    
+
     selectGuestByUserId(){}
     selectAllGuestByUserIdEventId(){}
     
-    //findAllByUserIdAndEvent, findByUserIdWhereStateIsTrue
-    //al crear un guest es buena idea generar un token con un qr.
-    //para setear un usuario a true seria necesario enviar ese token para darle el true al ingreso
-    //por ahora solo se manda el id de ese usuario
-    //poder generar un token de un usuario cuando sea necesario o se pierda el anterior.
-
-    // okey. entonces tendriamos varios endpoints que lo que hacen es:
-    // generar token, ver que información tiene ese token y setearlo.
-    // si el userId de ese token no le pertenece al usuario que tiene la sesión, 
-    // entonces retornar un error de acceso denegado.
+ 
 }

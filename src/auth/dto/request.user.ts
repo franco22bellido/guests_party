@@ -1,7 +1,7 @@
 export class RequestUser extends Request{
 
     user: {
-        email: string,
+        id: number,
         exp : number,
         iat: number};
 
