@@ -21,7 +21,7 @@ export class Event {
     userId: number;
 
 
-    @OneToMany(()=> Guest, (guest)=> guest.event, {cascade: false})
+    @OneToMany(()=> Guest, (guest)=> guest.event, {eager: false})
     guests: Guest[];
 
     @ManyToOne(()=> User, user=> user.events)

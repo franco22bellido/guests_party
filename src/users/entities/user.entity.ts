@@ -10,13 +10,13 @@ export class User {
     username: string;
     @Column({unique: true, type: "varchar", length: 255, nullable: false})
     email: string;
-    @Column({ nullable: false})
+    @Column({ nullable: false, select: false})
     password: string;
 
-    @OneToMany(()=> Event, event => event.user)
+    @OneToMany(()=> Event, event => event.user, )
     events: Event[]
 
-    @OneToMany(()=> Guest, guest=> guest.user)
+    @OneToMany(()=> Guest, guest=> guest.user, )
     guests: Guest[];
 
 }

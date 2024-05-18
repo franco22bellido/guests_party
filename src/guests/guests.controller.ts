@@ -1,9 +1,8 @@
-import { Controller } from '@nestjs/common';
+import { Controller, ParseIntPipe } from '@nestjs/common';
 import { Body, Get, Param, Post, Put, Delete, UseGuards, Req} from '@nestjs/common/decorators';
 import { RequestUser } from 'src/auth/dto/request.user';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { CreateGuestDto } from './dto/createGuest.dto';
-import { UpdateGuestDto } from './dto/updateGuest.dto';
 import { GuestsService } from './guests.service';
 
 @Controller('guests')
@@ -17,15 +16,18 @@ export class GuestsController {
     createGuest(@Body() newGuest: CreateGuestDto,
     @Req() requestUser : RequestUser
     ){
+        console.log("asmdioasmio");
         return this._guestService.createGuest(newGuest, requestUser.user.id);
     }
-
-
-    @UseGuards(AuthGuard)
     @Get('/:token')
-    getInfoByToken(@Param('token') token : string,
+    getInfoByToken(@Param('token') token : string){
+        return this._guestService.getInfoByToken(token);
+    }
+    @UseGuards(AuthGuard)
+    @Get('/regenerate/:guestId')
+    reGenerateToken(@Param('guestId', ParseIntPipe) guestsId : number,
     @Req() requestUser: RequestUser){
-        return this._guestService.getInfoByToken(token, requestUser.user.id);
+        return this._guestService.reGenerateToken(guestsId, requestUser.user.id);
     }
     
     @UseGuards(AuthGuard)
@@ -39,5 +41,10 @@ export class GuestsController {
     deleteOne(@Param('guestId') guestId: number){
         return this._guestService.deleteGuest(guestId);
     }
-
+    @UseGuards(AuthGuard)
+    @Put("/setStateById/:guestId")
+    setStateById(@Param('guestId') guestId: number,     
+    @Req() requestUser: RequestUser){
+        return this._guestService.setStateById(guestId, requestUser.user.id);
+    }
 }

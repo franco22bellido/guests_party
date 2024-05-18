@@ -37,7 +37,7 @@ export class Guest {
     @Column({type: 'integer'})
     userId: number;
 
-    @ManyToOne(()=> Event, event=> event.guests)
+    @ManyToOne(()=> Event, event=> event.guests, {onDelete: "CASCADE"})
     @JoinColumn({
         name: "eventId",
         referencedColumnName: "id"

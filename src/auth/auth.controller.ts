@@ -29,12 +29,14 @@ export class AuthController {
         return this._authService.login(loginDto);
     }
 
-    @Get('/profile')
+    @Get('/verifyToken')
     @UseGuards(AuthGuard)
-    profile(
+    async profile(
         @Request() req: RequestUser
     ){
-        return req.user;
+
+        const res =  await this._authService.findOne(req.user.id);
+        return res;
     }
     
 }

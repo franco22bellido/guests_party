@@ -9,9 +9,12 @@ import { RequestUser } from '../auth/dto/request.user';
 export class EventsController {
   constructor(private readonly eventsService: EventsService) {}
 
+
+  @UseGuards(AuthGuard)
   @Post()
-  create(@Body() createEventDto: CreateEventDto) {
-    return this.eventsService.create(createEventDto);
+  create(@Body() createEventDto: CreateEventDto,
+  @Req() requestUser : RequestUser) {
+    return this.eventsService.create(createEventDto,  requestUser.user.id);
   }
 
 
@@ -46,12 +49,11 @@ export class EventsController {
   }
 
   @UseGuards(AuthGuard)
-  @Get('guestsOfOneEvent/:id')
+  @Get('EventAndGuests/:id')
   getGuests(
     @Param('id') id: number,
     @Req() requestUser: RequestUser
   ){
     return this.eventsService.getRelationGuests(id ,requestUser.user.id);
   }
-
 }
