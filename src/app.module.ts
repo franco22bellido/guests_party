@@ -9,23 +9,29 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { EventsModule } from './events/events.module';
 import { Event } from './events/entities/event.entity';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: "mysql",
-      host: "localhost",
-      database: "guests_party",
-      port: 3306,
-      username: "root",
-      password: "Ironman312345aAA",
-      entities: [Guest, User, Event],
-      synchronize: true,
+    ConfigModule.forRoot({ isGlobal: true }),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: (_configService: ConfigService) => ({
+        type: 'mysql',
+        host: _configService.get<string>('DB_HOST'),
+        database: _configService.get<string>('DB_NAME'),
+        port: _configService.get<number>('DB_PORT'),
+        username: _configService.get<string>('DB_USERNAME'),
+        password: _configService.get<string>('DB_PASSWORD'),
+        entities: [Guest, User, Event],
+        synchronize: true,
+      }),
+      inject: [ConfigService],
     }),
     GuestsModule,
     UsersModule,
     AuthModule,
-    EventsModule
+    EventsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

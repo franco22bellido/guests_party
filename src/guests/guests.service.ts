@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { HttpStatus } from '@nestjs/common/enums';
 import { HttpException, NotFoundException } from '@nestjs/common/exceptions';
-import { JwtService, JsonWebTokenError } from '@nestjs/jwt';
+import { JwtService } from '@nestjs/jwt';
 import { EventsService } from 'src/events/events.service';
 import { CreateGuestDto } from './dto/createGuest.dto';
 import { UpdateGuestDto } from './dto/updateGuest.dto';
 import { GuestRepository } from './guest.repository';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class GuestsService {
@@ -13,6 +14,7 @@ export class GuestsService {
     private readonly _guestRepository: GuestRepository,
     private readonly _jwtService: JwtService,
     private readonly _eventService: EventsService,
+    private readonly _configService: ConfigService,
   ) {}
 
   async createGuest(createGuestDto: CreateGuestDto, userId: number) {
@@ -32,14 +34,16 @@ export class GuestsService {
 
       //generate token
       const payload = { id: GuestSaved.id };
-      const token = this._jwtService.sign(payload, { secret: 'guestSecret' });
-      const res = await this._guestRepository.findOne({
+      const token = this._jwtService.signAsync(payload, {
+        secret: this._configService.get<string>('JWT_SECRET_GUESTS'),
+      });
+      const data = await this._guestRepository.findOne({
         where: { id: GuestSaved.id },
         relations: { user: true, event: true },
       });
 
       return {
-        guest: res,
+        guest: data,
         token: token,
       };
     } catch (error) {
@@ -58,7 +62,7 @@ export class GuestsService {
   async getInfoByToken(token: string) {
     try {
       const ifTokenValid = this._jwtService.verify(token, {
-        secret: 'guestSecret',
+        secret: this._configService.get<string>('JWT_SECRET_GUESTS'),
       });
 
       const guestFound = await this._guestRepository.findOne({
@@ -80,7 +84,9 @@ export class GuestsService {
 
   async setStateByToken(token: string, userId: number) {
     try {
-      const payload = this._jwtService.verify(token, { secret: 'guestSecret' });
+      const payload = this._jwtService.verify(token, {
+        secret: this._configService.get<string>('JWT_SECRET_GUESTS'),
+      });
 
       const guestFound = await this._guestRepository.findOne({
         where: { id: payload.id, userId },
@@ -126,7 +132,9 @@ export class GuestsService {
     }
     //generate token
     const payload = { id: guestFound.id };
-    const token = this._jwtService.sign(payload, { secret: 'guestSecret' });
+    const token = this._jwtService.sign(payload, {
+      secret: this._configService.get<string>('JWT_SECRET_GUESTS'),
+    });
 
     return { guest: guestFound, token: token };
   }

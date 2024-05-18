@@ -10,8 +10,8 @@ async function bootstrap() {
     }),
   );
   app.use(cookieParser());
-  app.enableCors({ credentials: true, origin: ['http://localhost:5173'] });
-  await app.listen(3000);
+  app.enableCors({ credentials: true, origin: [process.env.FRONT_ORIGIN] });
+  await app.listen(process.env.PORT || 3001);
 }
 
 bootstrap();

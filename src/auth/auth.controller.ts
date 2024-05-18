@@ -23,7 +23,7 @@ export class AuthController {
   async login(@Body() loginDto: LoginDto, @Res() response: Response) {
     const data = await this._authService.login(loginDto);
     response.cookie('token', data.token, { sameSite: 'lax', secure: true });
-    return response.json(data);
+    return response.status(200).json(data);
   }
 
   @Get('/verifyToken')

@@ -2,6 +2,7 @@
 /dist
 /node_modules
 /sql_codes
+.env
 
 # Logs
 logs

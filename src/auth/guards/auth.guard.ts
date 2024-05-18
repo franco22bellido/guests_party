@@ -7,14 +7,17 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { RequestUser } from '../dto/request.user';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  constructor(private readonly _jwtService: JwtService) {}
+  constructor(
+    private readonly _jwtService: JwtService,
+    private readonly _configService: ConfigService,
+  ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request: RequestUser = context.switchToHttp().getRequest();
-
     const token = request.cookies.token;
 
     if (!token) {
@@ -22,7 +25,7 @@ export class AuthGuard implements CanActivate {
     }
     try {
       const payload = await this._jwtService.verifyAsync(token, {
-        secret: 'jwtSecret',
+        secret: this._configService.get<string>('JWT_SECRET') || 'jwtSecret',
       });
       request['user'] = payload;
     } catch (error) {
