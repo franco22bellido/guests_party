@@ -17,7 +17,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (_configService: ConfigService) => ({
-        type: 'mysql',
+        type: 'postgres',
+        ssl: true,
         host: _configService.get<string>('DB_HOST'),
         database: _configService.get<string>('DB_NAME'),
         port: _configService.get<number>('DB_PORT'),
