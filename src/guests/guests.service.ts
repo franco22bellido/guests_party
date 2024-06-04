@@ -34,14 +34,13 @@ export class GuestsService {
 
       //generate token
       const payload = { id: GuestSaved.id };
-      const token = this._jwtService.signAsync(payload, {
+      const token = await this._jwtService.signAsync(payload, {
         secret: this._configService.get<string>('JWT_SECRET_GUESTS'),
       });
       const data = await this._guestRepository.findOne({
         where: { id: GuestSaved.id },
         relations: { user: true, event: true },
       });
-
       return {
         guest: data,
         token: token,
