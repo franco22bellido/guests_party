@@ -22,7 +22,12 @@ export class AuthController {
   @Post('/login')
   async login(@Body() loginDto: LoginDto, @Res() response: Response) {
     const data = await this._authService.login(loginDto);
-    response.cookie('token', data.token, { sameSite: 'lax', secure: true });
+    response.cookie('token', data.token, {
+      sameSite: 'none',
+      secure: true,
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 24 * 7,
+    });
     return response.status(200).json(data);
   }
 

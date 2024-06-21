@@ -14,11 +14,12 @@ export class EventsService {
   ) {}
 
   async create(createEventDto: CreateEventDto, userId: number) {
-    return await this._eventRepository.save({
+    const newEvent = this._eventRepository.create({
+      ...createEventDto,
       userId,
-      startDate: createEventDto.startDate,
-      eventName: createEventDto.eventName,
     });
+
+    return await this._eventRepository.save(newEvent);
   }
 
   async findAll(userId: number) {
