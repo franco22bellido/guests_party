@@ -38,7 +38,11 @@ export class AuthController {
   }
   @Delete('/logout')
   logOut(@Res() response: Response) {
-    response.clearCookie('token');
+    response.clearCookie('token', {
+      sameSite: 'none',
+      secure: true,
+      httpOnly: true,
+    });
     return response.status(204).json();
   }
   @Get('/verifyToken')
