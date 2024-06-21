@@ -1,5 +1,11 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { Get, Request, Res, UseGuards } from '@nestjs/common/decorators';
+import {
+  Delete,
+  Get,
+  Request,
+  Res,
+  UseGuards,
+} from '@nestjs/common/decorators';
 import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
 import { AuthGuard } from './guards/auth.guard';
@@ -30,7 +36,11 @@ export class AuthController {
     });
     return response.status(200).json(data);
   }
-
+  @Delete('/logout')
+  logOut(@Res() response: Response) {
+    response.clearCookie('token');
+    return response.status(204).json();
+  }
   @Get('/verifyToken')
   @UseGuards(AuthGuard)
   async profile(@Request() req: RequestUser) {
